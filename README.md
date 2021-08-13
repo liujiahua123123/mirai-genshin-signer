@@ -10,3 +10,10 @@
   </li><br>
 </ul>
 基于相关协议要求开源
+
+
+```code
+
+doSigns("你的ACCOUNT_ID cookie","你的COOKIE_TOKEN cookie")
+
+```

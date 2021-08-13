@@ -341,6 +341,11 @@ open class MockChromeClient : Ksoup() {
             it.header("Origin",it.request().url().protocol + "://" + it.request().url().host)
         }
     }
+
+    fun addCookie(host:String, cookieKey:String, cookieValue:String){
+        cookies.putIfAbsent(host, mutableMapOf())
+        cookies[host]!![cookieKey] = cookieValue
+    }
 }
 
 @Serializable
@@ -426,9 +431,22 @@ fun Connection.data(formData: FormData){
     }
 }
 
+@Suppress("UNSAFE_CAST")
+fun Connection.data(getParams: GetParams){
+    getParams::class.memberProperties.forEach {
+        data(it.name, (it as KProperty1<GetParams, *>).get(getParams).toString())
+    }
+}
+
+
 
 interface JsonRequestBody
 fun Connection.requestBody(body:JsonRequestBody){
+    requestBody(ksoupJson.encodeToString(body))
+    header("Content-Type", "application/json")
+}
+
+fun Connection.Request.requestBody(body:JsonRequestBody){
     requestBody(ksoupJson.encodeToString(body))
     header("Content-Type", "application/json")
 }

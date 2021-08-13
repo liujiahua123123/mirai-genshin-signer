@@ -11,9 +11,9 @@ const val SIGN_ACT_ID = "e202009291139501"
 @Serializable
 data class SignRequest(
     val act_id:String = SIGN_ACT_ID,
-    val ragion:String = "cn_gf01",
+    val region:String = "cn_gf01",
     val uid:String
-):JsonRequestBody
+)
 
 @Serializable
 data class SignResponse(
@@ -59,7 +59,7 @@ data class GetGameRolesResponse(
 @Serializable
 data class SignRewordInfoRequest(
     val act_id:String = SIGN_ACT_ID,
-    val ragion:String = "cn_gf01",
+    val region:String = "cn_gf01",
     val uid:String
 ):GetParams
 

@@ -30,6 +30,8 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 import kotlin.math.max
+import kotlin.reflect.KProperty1
+import kotlin.reflect.full.memberProperties
 
 val ksoupJson = Json {
     this.ignoreUnknownKeys = true
@@ -411,4 +413,22 @@ fun PortableRequest.encode():String{
 @OptIn(InternalAPI::class)
 fun String.decodePortableRequest():PortableRequest{
     return ksoupJson.decodeFromString(this)
+}
+
+interface FormData
+
+interface GetParams
+
+@Suppress("UNSAFE_CAST")
+fun Connection.data(formData: FormData){
+    formData::class.memberProperties.forEach {
+        data(it.name, (it as KProperty1<FormData, *>).get(formData).toString())
+    }
+}
+
+
+interface JsonRequestBody
+fun Connection.requestBody(body:JsonRequestBody){
+    requestBody(ksoupJson.encodeToString(body))
+    header("Content-Type", "application/json")
 }

@@ -66,11 +66,13 @@ suspend fun main() {
         }else{
             delay(Duration.ofMillis(100))
         }
-        countDown -= (currentTimeMillis() - lastTime)
-        lastTime = currentTimeMillis()
-        println("Current Time: " + cdf.format(currentTimeMillis()) + ", start in " + countDown + " ms")
+        val curt = currentTimeMillis()
+
+        countDown -= (curt - lastTime)
+        lastTime = curt
+        println("Current Time: " + cdf.format(curt) + ", start in " + countDown + " ms")
         if(countDown <= 0){
-            delay(Duration.ofMillis(startInMill - currentTimeMillis()))
+            delay(Duration.ofMillis(startInMill - curt))
             println("Task Delivered")
             break
         }
@@ -80,7 +82,6 @@ suspend fun main() {
 
 
 suspend fun startTask(combo: String){
-
     println(cdf.format(currentTimeMillis()) + " Spammer start")
     repeat(100){
         if(!success) {

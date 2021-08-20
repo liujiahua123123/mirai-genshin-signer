@@ -1,6 +1,7 @@
 package net.mamoe.n
 
 import kotlinx.html.currentTimeMillis
+import kotlinx.serialization.descriptors.buildSerialDescriptor
 import kotlinx.serialization.encodeToString
 import org.jsoup.Connection
 import java.security.MessageDigest
@@ -176,7 +177,7 @@ object DoSigns:Step{
 
 
 
-suspend fun doSigns(accountId:String, accountToken:String){
+suspend fun doSigns(accountId:String, accountToken:String):String{
 
     val client = MockChromeClient().apply {
         addIntrinsic {
@@ -203,10 +204,17 @@ suspend fun doSigns(accountId:String, accountToken:String){
         InitClient,GetRoles,FilterRoles,DoSigns
     )
 
-    println("Sign Complete")
-    component[TaskResults].forEach {
-        println(it.toString())
+    return buildString {
+        append("Sign Complete\n")
+        component[TaskResults].forEach {
+            append(it.toString())
+            append("\n")
+        }
     }
 }
 
+
+suspend fun main(){
+    println(doSigns("11143497","ZLjxCDyEpnjqkusd9KNkLWBcEMXm75BkYJONpFWB"))
+}
 
